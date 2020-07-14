@@ -14,8 +14,6 @@ namespace CashTrackerApiService
 
         public string Password { get; set; }
 
-        public string ConnectionString { get; set; }
-
     }
 
 

@@ -28,9 +28,7 @@ namespace CashTrackerApiService
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             var postgres = Configuration.GetSection("PostgresConnection").Get<PostgresConnection>();
-            postgres.ConnectionString = Utils.BuildPsqlConnectionString(postgres);
             services.AddSingleton<PostgresConnection>(postgres);
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
