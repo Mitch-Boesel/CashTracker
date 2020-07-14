@@ -1,5 +1,4 @@
-﻿using CashTrackerApiService.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -8,23 +7,25 @@ using System.Threading.Tasks;
 
 namespace CashTrackerApiService
 {
-    public class PostgresQuery
+    public abstract class PostgresQuery
     {
-        private readonly string _connectionString;
+        public string Year { get; }
+        public string ResultJson { get; set; }
 
-        public PostgresQuery(PostgresConnection pgConnection)
+        public PostgresQuery(string year)
         {
-            _connectionString = BuildPsqlConnectionString(pgConnection);
+            Year = year;
         }
-        private string BuildPsqlConnectionString(PostgresConnection pg)
+        protected string BuildPsqlConnectionString(PostgresConnection pg)
         {
             var connectionString = $"Host={pg.Host};Username={pg.Username};Database={pg.Database};password={pg.Password}";
             return connectionString;
         }
 
-        public string ExecuteQuery(string sqlstr)
+        public string ExecuteQuery(string connectionStr)
         {
-            using (var connection = new NpgsqlConnection(_connectionString))
+            var sqlstr = BuildSqlString();
+            using (var connection = new NpgsqlConnection(connectionStr))
             {
                 string jsonString = string.Empty;
                 connection.Open();
@@ -34,8 +35,8 @@ namespace CashTrackerApiService
                     cmd.CommandText = sqlstr;
                     try
                     {
-                       var reader = cmd.ExecuteReader();
-                       jsonString = ExtractTotals(reader);
+                        var reader = cmd.ExecuteReader();
+                        jsonString = ExtractData(reader);
                     }
                     catch (NpgsqlException ex)
                     {
@@ -52,38 +53,27 @@ namespace CashTrackerApiService
             }
         }
 
- /*       public string ExtractPurchasesFromQuery(NpgsqlDataReader reader)  // this one is fucked right now
+        public abstract string BuildSqlString();
+
+        /// <summary>
+        /// Should use ToJson() method
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        public abstract string ExtractData(NpgsqlDataReader reader);
+
+        public string ToJson(object dictionary)
         {
-            Dictionary<string, Dictionary<string, string>> purchases = new Dictionary<string, Dictionary<string, string>>();
-            while (reader.Read())
-            {
-                purchases.Add(new Purchase(reader.GetInt32(0),
-                    (double)reader.GetValue(1),
-                    reader.GetDate(2).ToString(),
-                    reader.GetString(3),
-                    reader.GetString(4),
-                    string.Empty));
-            }
-
-            return purchases;
-        }*/
-
-        private string ExtractTotals(NpgsqlDataReader reader)
-        {
-            Dictionary<string, Dictionary<string, string>> totals = new Dictionary<string, Dictionary<string, string>>();
-            totals.Add("data", new Dictionary<string, string>());
-            while (reader.Read())
-            {
-                totals["data"].Add(reader.GetString(0), reader.GetValue(1).ToString());
-            }
-
-            return ToJson(totals);
+            string json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
+            return json;
         }
 
+        /*
         private string ToJson(Dictionary<string, Dictionary<string, string>> dictionary)
         {
             string json = JsonConvert.SerializeObject(dictionary, Formatting.Indented);
             return json;
         }
+         */
     }
 }

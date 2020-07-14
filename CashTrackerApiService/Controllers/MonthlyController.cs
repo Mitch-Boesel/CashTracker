@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace CashTrackerApiService.Controllers
 {
-    [Route("api/CT/")]
+    [Route("api/CT/Monthly")]
     [ApiController]
     public class MonthlyController : ControllerBase
     {
@@ -20,24 +20,34 @@ namespace CashTrackerApiService.Controllers
             postgresConnection = pg;
         }
 
-        // GET: api/Monthly
+        // GET: Monthly category spending totals for all categories
         [HttpGet]
-        [HttpGet("Monthly")]
-        public string Get()
+        [HttpGet("Totals/All/{Month}/{Year}")]
+        public string GetMonthlyTotals(string Month, string Year)
         {
-            ISqlStringBuilder stringBuilder = new MonthlyTotalsSqlStringBuilder("January", "2020");
-            PostgresQuery postgresQuery = new PostgresQuery(postgresConnection);
-            string json = postgresQuery.ExecuteQuery(stringBuilder.BuildSqlString());
-            return json;
+            PostgresQuery query = new PgMonthlyTotalsAll(Month, Year,postgresConnection);
+            return query.ResultJson;
         }
 
+        
         // GET: api/Monthly/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet]
+        [HttpGet("Purchases/{Category}/{Month}/{Year}")]
+        public string GetMonthlyPurchasesSpecific(string Month, string Year, string Category)
         {
-            return "value";
+            PostgresQuery query = new PgMonthlyPurchasesSpecific(Month, Year, Category, postgresConnection);
+            return query.ResultJson;
         }
 
+        [HttpGet]
+        [HttpGet("Purchases/{Month}/{Year}")]
+        public string GetMontlyPurchasesAll(string Month, string Year)
+        {
+            PostgresQuery query = new PgMonthlyPurchasesAll(Month, Year, postgresConnection);
+            return query.ResultJson;
+        }
+
+        /*
         // POST: api/Monthly
         [HttpPost]
         public void Post([FromBody] string value)
@@ -54,6 +64,6 @@ namespace CashTrackerApiService.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-        }
+        }*/
     }
 }

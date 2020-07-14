@@ -1,24 +1,23 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CashTrackerApiService
 {
-    public abstract class MonthlySqlStringBuilder : ISqlStringBuilder
+    public class PgMonthlyPurchasesAll : PostgresQuery
     {
-        public  Dictionary<string, Tuple<string, string>> MonthEdgeDates { get;}
-        public string Year { get;}
-        public string Month { get;}
+        public Dictionary<string, Tuple<string, string>> MonthEdgeDates { get; }
+        public string Month { get; }
 
-        public MonthlySqlStringBuilder(string month, string year)
+        public PgMonthlyPurchasesAll(string month, string year, PostgresConnection connection) : base(year)
         {
             Month = month;
-            Year = year;
             MonthEdgeDates = InitMonthEdgeDates();
+            ResultJson = ExecuteQuery(BuildPsqlConnectionString(connection));
         }
 
-        public abstract string BuildSqlString();
 
         private Dictionary<string, Tuple<string, string>> InitMonthEdgeDates()
         {
@@ -39,5 +38,33 @@ namespace CashTrackerApiService
             return edgeDates;
         }
 
+        public override string BuildSqlString()
+        {
+            var sqlString = $"SELECT *" +
+                $" FROM purchase" +
+                $" WHERE purchase_date between '{MonthEdgeDates[Month].Item1}' and '{MonthEdgeDates[Month].Item2}'" +
+                $" ORDER BY purchase_date";
+
+            return sqlString;
+        }
+
+        public override string ExtractData(NpgsqlDataReader reader)
+        {
+            Dictionary<string, Dictionary<string, Dictionary<string, string>>> totals = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
+            totals.Add("data", new Dictionary<string, Dictionary<string, string>>());
+            var i = 0;
+
+            while (reader.Read())
+            {
+                totals["data"].Add(i.ToString(), new Dictionary<string, string>());
+                totals["data"][i.ToString()].Add("price", reader.GetValue(1).ToString());
+                totals["data"][i.ToString()].Add("date", reader.GetDate(2).ToString());
+                totals["data"][i.ToString()].Add("category", reader.GetString(3));
+                totals["data"][i.ToString()].Add("business", reader.GetString(4));
+                i++;
+            }
+
+            return ToJson(totals);
+        }
     }
 }
