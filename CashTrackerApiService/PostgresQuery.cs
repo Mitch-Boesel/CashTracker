@@ -16,11 +16,6 @@ namespace CashTrackerApiService
         {
             Year = year;
         }
-        protected string BuildPsqlConnectionString(PostgresConnection pg)
-        {
-            var connectionString = $"Host={pg.Host};Username={pg.Username};Database={pg.Database};password={pg.Password}";
-            return connectionString;
-        }
 
         public string ExecuteQuery(string connectionStr)
         {
@@ -42,6 +37,7 @@ namespace CashTrackerApiService
                     {
                         Console.WriteLine(ex.Message.ToString());
                         Console.WriteLine("SQL Error - " + ex.Message.ToString());
+                        jsonString = "SQl Error, Request Failed!";
                     }
                     finally
                     {

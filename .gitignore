@@ -352,3 +352,6 @@ MigrationBackup/
 # My text files
 CashTracker_Architecture.txt
 Notes.txt
+SQL_Queries.txt
+WorkItems.txt
+table_schema.txt

@@ -19,11 +19,21 @@ namespace CashTrackerApiService.Models
 
         public string Notes { get; set; }
 
-        public Purchase(int pid, double price, string purchaseDate, string category, string business, string notes)
+        //public Purchase(int pid, double price, string purchaseDate, string category, string business, string notes)
+        //{
+        //    Pid = pid;
+        //    Price = price;
+        //    PurchaseDate = purchaseDate;
+        //    Category = category;
+        //    Business = business;
+        //    Notes = notes;
+        //}
+
+        public Purchase(double price, string purchaseData, string category, string business, string notes="")
         {
-            Pid = pid;
+            Pid = -1;
             Price = price;
-            PurchaseDate = purchaseDate;
+            PurchaseDate = purchaseData;
             Category = category;
             Business = business;
             Notes = notes;

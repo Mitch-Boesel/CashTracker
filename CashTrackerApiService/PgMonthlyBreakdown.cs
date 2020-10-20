@@ -1,25 +1,22 @@
-﻿using Npgsql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Npgsql;
 
 namespace CashTrackerApiService
 {
-    public class PgMonthlyPurchasesSpecific : PostgresQuery
+    public class PgMonthlyBreakdown : PostgresQuery
     {
         public Dictionary<string, Tuple<string, string>> MonthEdgeDates { get; }
         public string Month { get; }
-        public string Category { get; set; }
 
         private string Table { get; }
-
-        public PgMonthlyPurchasesSpecific(string month, string year, string category, PostgresConnection connection) : base(year)
+        public PgMonthlyBreakdown(string month, string year, PostgresConnection connection) : base(year)
         {
             Table = connection.Table;
             Month = month;
             MonthEdgeDates = InitMonthEdgeDates();
-            Category = category;
             ResultJson = ExecuteQuery(connection.ConnectionString);
         }
 
@@ -57,31 +54,48 @@ namespace CashTrackerApiService
 
         public override string BuildSqlString()
         {
-            var sqlString = $"SELECT *" +
-                $" FROM {Table}" +
-                $" WHERE category = '{Category}' and purchase_date between '{MonthEdgeDates[Month].Item1}' and '{MonthEdgeDates[Month].Item2}'" +
-                $" ORDER BY purchase_date";
+            var sqlString = $"SELECT category, count(category) as count,  sum(price) as total, CAST((sum(price) / spent) * 100 as int) as percentage" +
+                $" FROM (SELECT sum(price) as spent" + 
+                      $" FROM {Table}" +
+                      $" WHERE purchase_date between '{MonthEdgeDates[Month].Item1}' and '{MonthEdgeDates[Month].Item2}'" + 
+                      $" ) as temp, {Table}" +
+                $" WHERE purchase_date between '{MonthEdgeDates[Month].Item1}' and '{MonthEdgeDates[Month].Item2}'" +
+                $" GROUP BY {Table}.category, temp.spent" +
+                $" ORDER BY total desc";
 
             return sqlString;
         }
 
-        public override string ExtractData(NpgsqlDataReader reader)
+        //public override string ExtractData(NpgsqlDataReader reader)
+        //{
+        //    Dictionary<string, Dictionary<string, List<string>>> totals = new Dictionary<string, Dictionary<string, List<string>>>();
+        //    totals.Add("data", new Dictionary<string, List<string>>());
+        //    while (reader.Read())
+        //    {
+        //        var list = new List<string>(3);
+        //        list.Add(reader.GetValue(1).ToString());
+        //        list.Add(reader.GetValue(2).ToString());
+        //        list.Add(reader.GetValue(3).ToString() + "%");
+        //        totals["data"].Add(reader.GetString(0), list);
+        //    }
+        //
+    //        return ToJson(totals);
+    //}
+    public override string ExtractData(NpgsqlDataReader reader)
+    {
+        Dictionary<string, List<Dictionary<string, string>>> totals = new Dictionary<string, List<Dictionary<string, string>>>();
+        totals.Add("data", new List<Dictionary<string, string>>());
+        while (reader.Read())
         {
-            Dictionary<string, Dictionary<string, Dictionary<string, string>>>  totals = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
-            totals.Add("data", new Dictionary<string, Dictionary<string, string>>());
-            var i = 0;
-
-            while (reader.Read())
-            {
-                totals["data"].Add(i.ToString(), new Dictionary<string, string>());
-                totals["data"][i.ToString()].Add("price", reader.GetValue(1).ToString());
-                totals["data"][i.ToString()].Add("date", reader.GetDate(2).ToString());
-                totals["data"][i.ToString()].Add("category", reader.GetString(3));
-                totals["data"][i.ToString()].Add("business", reader.GetString(4));
-                i++;
-            }
-
-            return ToJson(totals);
+            var dict = new Dictionary<string, string>();
+            dict.Add("category", reader.GetValue(0).ToString());
+            dict.Add("frequency", reader.GetValue(1).ToString());
+            dict.Add("spent", reader.GetValue(2).ToString());
+            dict.Add("percent", reader.GetValue(3).ToString() + "%");
+            totals["data"].Add(dict);
         }
+
+        return ToJson(totals);
     }
+}
 }
