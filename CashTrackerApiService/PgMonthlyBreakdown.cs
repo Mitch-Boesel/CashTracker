@@ -66,25 +66,13 @@ namespace CashTrackerApiService
             return sqlString;
         }
 
-        //public override string ExtractData(NpgsqlDataReader reader)
-        //{
-        //    Dictionary<string, Dictionary<string, List<string>>> totals = new Dictionary<string, Dictionary<string, List<string>>>();
-        //    totals.Add("data", new Dictionary<string, List<string>>());
-        //    while (reader.Read())
-        //    {
-        //        var list = new List<string>(3);
-        //        list.Add(reader.GetValue(1).ToString());
-        //        list.Add(reader.GetValue(2).ToString());
-        //        list.Add(reader.GetValue(3).ToString() + "%");
-        //        totals["data"].Add(reader.GetString(0), list);
-        //    }
-        //
-    //        return ToJson(totals);
-    //}
     public override string ExtractData(NpgsqlDataReader reader)
     {
         Dictionary<string, List<Dictionary<string, string>>> totals = new Dictionary<string, List<Dictionary<string, string>>>();
         totals.Add("data", new List<Dictionary<string, string>>());
+        double total = 0.0;
+        int frequency = 0;
+
         while (reader.Read())
         {
             var dict = new Dictionary<string, string>();
@@ -93,7 +81,17 @@ namespace CashTrackerApiService
             dict.Add("spent", reader.GetValue(2).ToString());
             dict.Add("percent", reader.GetValue(3).ToString() + "%");
             totals["data"].Add(dict);
+
+            frequency += reader.GetInt32(1);
+            total += Convert.ToDouble(reader.GetValue(2).ToString());
         }
+
+        var finalEntry = new Dictionary<string, string>();
+            finalEntry.Add("category", "TOTAL");
+            finalEntry.Add("frequency", frequency.ToString());
+            finalEntry.Add("spent", total.ToString());
+            finalEntry.Add("percent", "100%");
+        totals["data"].Add(finalEntry);
 
         return ToJson(totals);
     }
