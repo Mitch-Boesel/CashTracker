@@ -34,6 +34,15 @@ namespace CashTrackerApiService.Controllers
             return query.ResultJson;
         }
 
+        // GET: Yearly category breakdown -> number of purchases, money spent, percentage of total
+        [HttpGet]
+        [HttpGet("breakdown/{Year}")]
+        public string GetYearlyBreakdown(string Year)
+        {
+            PostgresQuery query = new PgYearlyBreakdown(Year, postgresConnection);
+            return query.ResultJson;
+        }
+
         /*
         // POST: api/Yearly
         [HttpPost]

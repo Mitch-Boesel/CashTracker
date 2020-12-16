@@ -65,21 +65,23 @@ namespace CashTrackerApiService
 
         public override string ExtractData(NpgsqlDataReader reader)
         {
-            Dictionary<string, Dictionary<string, Dictionary<string, string>>> totals = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
-            totals.Add("data", new Dictionary<string, Dictionary<string, string>>());
-            var i = 0;
+            Dictionary<string, List<Dictionary<string, string>>> totals = new Dictionary<string, List<Dictionary<string, string>>>();
+            totals.Add("data", new List<Dictionary<string, string>>());
 
             while (reader.Read())
             {
-                totals["data"].Add(i.ToString(), new Dictionary<string, string>());
-                totals["data"][i.ToString()].Add("price", reader.GetValue(1).ToString());
-                totals["data"][i.ToString()].Add("date", reader.GetDate(2).ToString());
-                totals["data"][i.ToString()].Add("category", reader.GetString(3));
-                totals["data"][i.ToString()].Add("business", reader.GetString(4));
-                i++;
+                var dict = new Dictionary<string, string>();
+
+                dict.Add("Business", reader.GetValue(4).ToString());
+                dict.Add("Category", reader.GetValue(3).ToString());
+                dict.Add("Price", reader.GetValue(1).ToString());
+                dict.Add("Date", reader.GetDate(2).ToString());
+
+                totals["data"].Add(dict);
             }
 
             return ToJson(totals);
         }
-    }
+
+}
 }

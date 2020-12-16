@@ -27,15 +27,14 @@ namespace CashTrackerApiService.Controllers
             PostgresConnection = pg;
             Logger = logger;
         }
-        // GET: api/PostPurchase
-        //[HttpPost]
-        //[HttpPost("{Price}/{PurchaseDate}/{Category}/{Business}")]
-        //public string Get(string Price, string PurchaseDate, string Category, string Business)
-        //{
-        //    var new_purch = new Purchase(double.Parse(Price), PurchaseDate, Category, Business);
-        //    var query = new PostNewPurchase(new_purch, PostgresConnection);
-        //    return query.ResultJson;
-        //}
+        
+        [HttpGet]
+        [HttpGet("categories")]
+        public string GetCategories()
+        {
+            PostgresQuery query = new PgGetCategories(PostgresConnection);
+            return query.ResultJson;
+        }
 
         [HttpPost]
         [HttpPost("data")]

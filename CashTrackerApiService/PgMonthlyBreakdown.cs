@@ -77,7 +77,7 @@ namespace CashTrackerApiService
         {
             var dict = new Dictionary<string, string>();
             dict.Add("category", reader.GetValue(0).ToString());
-            dict.Add("frequency", reader.GetValue(1).ToString());
+            dict.Add("purchases", reader.GetValue(1).ToString());
             dict.Add("spent", reader.GetValue(2).ToString());
             dict.Add("percent", reader.GetValue(3).ToString() + "%");
             totals["data"].Add(dict);
@@ -88,7 +88,7 @@ namespace CashTrackerApiService
 
         var finalEntry = new Dictionary<string, string>();
             finalEntry.Add("category", "TOTAL");
-            finalEntry.Add("frequency", frequency.ToString());
+            finalEntry.Add("purchases", frequency.ToString());
             finalEntry.Add("spent", total.ToString());
             finalEntry.Add("percent", "100%");
         totals["data"].Add(finalEntry);
