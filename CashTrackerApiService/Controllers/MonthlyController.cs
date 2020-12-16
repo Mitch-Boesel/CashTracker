@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace CashTrackerApiService.Controllers
 {
-    [Route("api/CT/Monthly")]
+    [Route("api/ct/monthly")]
     [ApiController]
     public class MonthlyController : ControllerBase
     {
@@ -22,17 +22,26 @@ namespace CashTrackerApiService.Controllers
 
         // GET: Monthly category spending totals for all categories
         [HttpGet]
-        [HttpGet("Totals/All/{Month}/{Year}")]
+        [HttpGet("totals/all/{Month}/{Year}")]
         public string GetMonthlyTotals(string Month, string Year)
         {
-            PostgresQuery query = new PgMonthlyTotalsAll(Month, Year,postgresConnection);
+            PostgresQuery query = new PgMonthlyTotals(Month, Year, postgresConnection);
+            return query.ResultJson;
+        }
+
+        // GET: Monthly category breakdown -> number of purchases, money spent, percentage of total
+        [HttpGet]
+        [HttpGet("breakdown/{Month}/{Year}")]
+        public string GetMonthlyBreakdown(string Month, string Year)
+        {
+            PostgresQuery query = new PgMonthlyBreakdown(Month, Year, postgresConnection);
             return query.ResultJson;
         }
 
         
-        // GET: api/Monthly/5
+        // GET: api/Monthly/
         [HttpGet]
-        [HttpGet("Purchases/{Category}/{Month}/{Year}")]
+        [HttpGet("purchases/{Category}/{Month}/{Year}")]
         public string GetMonthlyPurchasesSpecific(string Month, string Year, string Category)
         {
             PostgresQuery query = new PgMonthlyPurchasesSpecific(Month, Year, Category, postgresConnection);
@@ -40,7 +49,7 @@ namespace CashTrackerApiService.Controllers
         }
 
         [HttpGet]
-        [HttpGet("Purchases/{Month}/{Year}")]
+        [HttpGet("purchases/{Month}/{Year}")]
         public string GetMontlyPurchasesAll(string Month, string Year)
         {
             PostgresQuery query = new PgMonthlyPurchasesAll(Month, Year, postgresConnection);

@@ -10,16 +10,19 @@ namespace CashTrackerApiService.Controllers
     {
         public string Category { get; set; }
 
+        private string Table { get;}
+
         public PgYearlyPurchasesSpecific( string year, string category, PostgresConnection connection) : base(year)
         {
+            Table = connection.Table;
             Category = category;
-            ResultJson = ExecuteQuery(BuildPsqlConnectionString(connection));
+            ResultJson = ExecuteQuery(connection.ConnectionString);
         }
 
         public override string BuildSqlString()
         {
             var sqlString = $"SELECT *" +
-                $" FROM purchase" +
+                $" FROM {Table}" +
                 $" WHERE category = '{Category}' and purchase_date between '01/01/{Year}' and '12/31/{Year}'" +
                 $" ORDER BY purchase_date";
 

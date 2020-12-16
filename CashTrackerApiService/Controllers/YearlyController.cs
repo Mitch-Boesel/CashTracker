@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CashTrackerApiService.Controllers
 {
-    [Route("api/CT/Yearly")]
+    [Route("api/ct/yearly")]
     [ApiController]
     public class YearlyController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace CashTrackerApiService.Controllers
         }
         // GET: api/Yearly/5
         [HttpGet]
-        [HttpGet("Totals/{Year}")]
+        [HttpGet("totals/{Year}")]
         public string Get(string Year)
         {
             PostgresQuery query = new PgYearlyTotalsAll(Year, postgresConnection);
@@ -27,10 +27,19 @@ namespace CashTrackerApiService.Controllers
         }
 
         [HttpGet]
-        [HttpGet("Purchases/{Category}/{Year}")]
+        [HttpGet("purchases/{Category}/{Year}")]
         public string Get(string Category, string Year)
         {
             PostgresQuery query = new PgYearlyPurchasesSpecific(Year, Category, postgresConnection);
+            return query.ResultJson;
+        }
+
+        // GET: Yearly category breakdown -> number of purchases, money spent, percentage of total
+        [HttpGet]
+        [HttpGet("breakdown/{Year}")]
+        public string GetYearlyBreakdown(string Year)
+        {
+            PostgresQuery query = new PgYearlyBreakdown(Year, postgresConnection);
             return query.ResultJson;
         }
 

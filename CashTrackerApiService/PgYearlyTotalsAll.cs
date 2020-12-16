@@ -8,15 +8,18 @@ namespace CashTrackerApiService.Controllers
 {
     public class PgYearlyTotalsAll : PostgresQuery
     {
+        private string Table { get;}
+
         public PgYearlyTotalsAll(string year, PostgresConnection connection) : base(year)
         {
-            ResultJson = ExecuteQuery(BuildPsqlConnectionString(connection));
+            Table = connection.Table;
+            ResultJson = ExecuteQuery(connection.ConnectionString);
         }
 
         public override string BuildSqlString()
         {
             var sqlString = $"SELECT category, sum(price) as total" +
-                $" FROM purchase" +
+                $" FROM {Table}" +
                 $" WHERE purchase_date between '01/01/{Year}' and '12/31/{Year}'" +
                 $" GROUP BY category" +
                 $" ORDER BY total desc";

@@ -14,6 +14,7 @@ namespace CashTrackerApiService
     {
         public static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             CreateWebHostBuilder(args).Build().Run();
         }
 
