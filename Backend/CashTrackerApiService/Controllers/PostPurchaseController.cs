@@ -27,7 +27,7 @@ namespace CashTrackerApiService.Controllers
             PostgresConnection = pg;
             Logger = logger;
         }
-        
+
         [HttpGet]
         [HttpGet("categories")]
         public string GetCategories()
@@ -46,14 +46,19 @@ namespace CashTrackerApiService.Controllers
             {
                 var newPurchase = JsonConvert.DeserializeObject<Purchase>(d);
                 var query = new PostNewPurchase(newPurchase, PostgresConnection);
+                if (query.ResultJson == "SQl Error, Request Failed!")
+                {
+                    Logger.LogWarning("POST new purchase UNSUCCESSFUL");
+                    return "Purchase Save Was UNSUCCESSFUL";
+                }
                 Logger.LogWarning("POST new purchase SUCCESSFUL");
-                return query.ResultJson;
+                return "Purchase Successfully Saved!";
             }
             catch (Exception e)
             {
                 Logger.LogWarning(e.Message);
                 Logger.LogWarning("POST new purchase UNSUCCESSFUL");
-                return "POST new purchase UNSUCCESSFUL";
+                return "Purchase Save Was UNSUCCESSFUL";
             }
         }
 

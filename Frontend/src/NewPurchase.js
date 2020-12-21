@@ -4,7 +4,7 @@ import axios from "axios";
 class NewPurchase extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { business: "", purchase_date: "", price: "", category: "", category_list: [] };
+    this.state = { business: "...", purchase_date: "yyyy/mm/dd", price: "0.00", category: "", category_list: [] };
     this.onSubmit = this.onSubmit.bind(this);
     //this.handleChange = this.handleChange.bind(this);
     this.handleBusinessChange = this.handleBusinessChange.bind(this);
@@ -14,6 +14,7 @@ class NewPurchase extends React.Component {
     this.buildPostDataJson = this.buildPostDataJson.bind(this);
     this.HttpGetCategories = this.HttpGetCategories.bind(this);
     this.DisplayCategories = this.DisplayCategories.bind(this);
+    this.ValidateInputs = this.ValidateInputs.bind(this);
   }
 
   async HttpGetCategories() {
@@ -33,15 +34,25 @@ class NewPurchase extends React.Component {
     })
   }
 
-  onSubmit = e => {
+  ValidateInputs() {
+
+  }
+
+  async onSubmit(e) {
     e.preventDefault();
+    debugger;
     const postUrl = "https://localhost:5001/api/ct/newpurchase/data";
     const bodyData = this.buildPostDataJson();
-    const response = axios.post(postUrl, bodyData, {
+    const response = await axios.post(postUrl, bodyData, {
       headers: { 'Content-Type': 'application/json' }//, 'Content-Length': JSON.stringify(bodyData).length }
     });
-    alert(response.data);
-    console.log(response.data);
+    if (response.status == 200) {
+      alert(response.data);
+      console.log(response.data);
+    }
+    else {
+      alert(response.data);
+    }
   }
 
   buildPostDataJson() {
@@ -73,7 +84,6 @@ class NewPurchase extends React.Component {
 
   async componentDidMount() {
     const c_list = await this.HttpGetCategories();
-    debugger;
     this.setState({
       category_list: c_list
     });
@@ -99,8 +109,8 @@ class NewPurchase extends React.Component {
             <input
               input="text"
               value={this.state.purchase_date}
-              onChange={this.handlePurchDateChange}
-            ></input>
+              onChange={this.handlePurchDateChange}>
+            </input>
           </label>
           <label>
             Price:{" "}
