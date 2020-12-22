@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "axios";
-import PieChart from "./PieChart";
-import BreakdownChart from "./BreakdownChart";
+import PieChart from "../Charts/PieChart";
+import BreakdownChart from "../Charts/BreakdownChart";
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
+import LineChart from "../Charts/LineChart";
 
 class YearlyStatistics extends React.Component {
     constructor(props) {
@@ -10,22 +11,26 @@ class YearlyStatistics extends React.Component {
 
         this.state = {
             YearlySpendingData: {},
-            YearlySpendingPoints: [],
             YearlyBreakdownData: [],
+            YearlyMonthTotals: []
         }
 
         this.HTTPGetYearlySpending = this.HTTPGetYearlySpending.bind(this);
         this.SpendingToPieChartPoints = this.SpendingToPieChartPoints.bind(this);
+        this.SpendingToLineChartPoints = this.SpendingToLineChartPoints.bind(this);
     }
 
 
     async HTTPGetYearlySpending() {
         const today = new Date();
+        var dict = {};
         const url = "https://localhost:5001/api/ct/yearly/totals/" + today.getFullYear();
 
         await axios.get(url)
-            .then((resp) => this.state.YearlySpendingData = resp.data.data)
+            .then((resp) => dict = resp.data.data)
             .catch(() => alert("GetYearlySpending() Failed:("));
+
+        return dict;
     }
 
     // dont have this route wrtitten yet
@@ -39,6 +44,16 @@ class YearlyStatistics extends React.Component {
         //await axios.get(url)
         //    .then((resp) => bdata = resp.data.data)
         //    .catch(() => alert("HTTPGetMontlyBreakdown() Failed:("));
+        return list;
+    }
+
+    async HTTPGetYearlyMonthTotals() {
+        const today = new Date();
+        const url = "https://localhost:5001/api/ct/yearly/monthly/totals/" + today.getFullYear();
+        var list = []
+        await axios.get(url)
+            .then((resp) => list = resp.data.data)
+            .catch(() => alert("HTTPGetYearlyMonthTotals() failed :("));
         return list;
     }
 
@@ -58,23 +73,34 @@ class YearlyStatistics extends React.Component {
         return points;
     }
 
+    SpendingToLineChartPoints() {
+        const dict = this.state.YearlyMonthTotals;
+        var points = [];
+        for (var i = 0; i < dict.length; i++) {
+            points.push({ x: parseInt(dict[i]["Month"]), y: parseFloat(dict[i]["Total"]) })
+        }
+
+        return points;
+    }
+
     async componentDidMount() {
-        await this.HTTPGetYearlySpending();
+        const spending_dict = await this.HTTPGetYearlySpending();
         const bdown_list = await this.HTTPGetYearlyBreakdown();
+        const month_list = await this.HTTPGetYearlyMonthTotals();
 
         this.setState({
-            YearlySpendingPoints: this.SpendingToPieChartPoints(),
+            YearlySpendingData: spending_dict,
             YearlyBreakdownData: bdown_list,
+            YearlyMonthTotals: month_list
         });
 
         //this.setState(() => ({ YearlySpendingPoints: [{ y: 84, label: "hi" }, { y: 12, label: "bye" }, { y: 43.21, label: "woah" }] }));
-        console.log(this.state.YearlySpendingPoints);
-        console.log(this.state.YearlyBreakdownData);
     }
 
     render() {
-        const points = this.state.YearlySpendingPoints;
+        const points = this.SpendingToPieChartPoints();
         const breakdownData = this.state.YearlyBreakdownData;
+        const linechartData = this.SpendingToLineChartPoints();
         const date = new Date();
         return (
             <Tabs>
@@ -94,7 +120,7 @@ class YearlyStatistics extends React.Component {
                     <BreakdownChart data={breakdownData} month={date.getMonth() + 1} />
                 </TabPanel>
                 <TabPanel>
-                    <h2>Soon to have a line chart!</h2>
+                    <LineChart data={linechartData} title="This Year's Spending By Month" />
                 </TabPanel>
             </Tabs>
         );

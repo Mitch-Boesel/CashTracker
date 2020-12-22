@@ -1,5 +1,5 @@
 import React from "react";
-import CanvasJSReact from "./canvasjs.react"
+import CanvasJSReact from "../canvasjs.react"
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class PieChart extends React.Component {

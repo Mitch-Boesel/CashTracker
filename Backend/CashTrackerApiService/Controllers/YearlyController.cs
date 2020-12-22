@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CashTrackerApiService.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,13 @@ namespace CashTrackerApiService.Controllers
             return query.ResultJson;
         }
 
+        [HttpGet]
+        [HttpGet("monthly/totals/{Year}")]
+        public string GetYearlyMonthTotals(string Year)
+        {
+            PostgresQuery query = new PgYearlyMonthTotals(postgresConnection, Year);
+            return query.ResultJson;
+        }
         /*
         // POST: api/Yearly
         [HttpPost]

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
-import PieChart from "./PieChart";
-import BreakdownChart from "./BreakdownChart";
+import PieChart from "../Charts/PieChart";
+import BreakdownChart from "../Charts/BreakdownChart";
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
 
 class CompareMonths extends React.Component {

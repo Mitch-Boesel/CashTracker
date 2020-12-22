@@ -1,10 +1,10 @@
 import React from "react";
 import "./App.css";
-import NewPurchase from "./NewPurchase";
+import NewPurchase from "./NewPurchase/NewPurchase";
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
-import MonthlyStatistics from "./MontlhyStatistics";
-import YearlyStatistics from "./YearlyStatistics";
-import CompareMonths from "./CompareMonths";
+import MonthlyStatistics from "./MonthlyStatistics/MontlhyStatistics";
+import YearlyStatistics from "./YearlyStatistics/YearlyStatistics";
+import CompareMonths from "./CompareMonths/CompareMonths";
 
 function App() {
   return (
