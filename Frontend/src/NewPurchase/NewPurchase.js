@@ -61,6 +61,7 @@ class NewPurchase extends React.Component {
   }
 
   buildPostDataJson() {
+    debugger;
     const json = {
       "price": this.state.price.toString(),
       "purchasedate": this.state.purchase_date.toString(),
@@ -75,7 +76,6 @@ class NewPurchase extends React.Component {
   }
 
   handlePurchDateChange(value, event) {
-    debugger;
     if (value != null) {
       let [month, date, year] = value.toLocaleDateString("en-US").split("/");
       const fullDate = year + '/' + month + '/' + date;
@@ -85,7 +85,12 @@ class NewPurchase extends React.Component {
   }
 
   handlePriceChange(event) {
-    this.setState({ price: event.target.value });
+    var data = event.target.value;
+
+    if (data[0] == '$') {
+      data = data.slice(1, data.length);
+    }
+    this.setState({ price: data });
   }
 
   handleCategoryChange(event) {
