@@ -1,7 +1,14 @@
+html, body, #root, .App {
+  height: 100%;
+  background-color:  white;
+}
 .App {
   text-align: center;
 }
 
+html, body, #root, .App {
+  height: 100%;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +42,19 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+.tab-row {
+  background-color: rgb(130, 226, 144);
+}
+
+.tab {
+  color: rgb(230, 230, 7);
+  display: block;
+}
+
+.header {
+  background-color: green;
+  color:yellow;
 }

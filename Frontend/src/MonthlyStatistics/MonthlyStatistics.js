@@ -3,6 +3,7 @@ import axios from "axios";
 import PieChart from "../Charts/PieChart";
 import BreakdownChart from "../Charts/BreakdownChart";
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
+import "./MonthlyStatistics.css";
 
 class MonthlyStatistics extends React.Component {
     constructor(props) {
@@ -92,27 +93,30 @@ class MonthlyStatistics extends React.Component {
         const breakdownData = this.state.MonthlyBreakdownData;
         const purchases = this.state.MonthlyPurchases;
         const date = new Date();
+        const color = { backgroundColor: "yellow" };
         return (
-            <Tabs>
-                <TabList>
-                    <Tab id="MSTab1">
-                        <div>Spending Chart</div>
-                    </Tab>
-                    <Tab id='MSTab2'>
-                        <div>Breakdown Table</div>
-                    </Tab>
-                    <Tab id="MSTab3">Purchase List</Tab>
-                </TabList>
-                <TabPanel>
-                    <PieChart data={points} title="This Month's Spending" />
-                </TabPanel>
-                <TabPanel>
-                    <BreakdownChart data={breakdownData} month={date.getMonth() + 1} />
-                </TabPanel>
-                <TabPanel>
-                    <BreakdownChart data={purchases} month={date.getMonth() + 1} />
-                </TabPanel>
-            </Tabs>
+            <div>
+                <Tabs className="month-tab-row">
+                    <TabList>
+                        <Tab id="MSTab1">
+                            <div>Spending Chart</div>
+                        </Tab>
+                        <Tab id='MSTab2'>
+                            <div>Breakdown Table</div>
+                        </Tab>
+                        <Tab id="MSTab3">Purchase List</Tab>
+                    </TabList>
+                    <TabPanel className="pie-chart">
+                        <PieChart data={points} title="This Month's Spending" />
+                    </TabPanel>
+                    <TabPanel>
+                        <BreakdownChart data={breakdownData} month={date.getMonth() + 1} />
+                    </TabPanel>
+                    <TabPanel>
+                        <BreakdownChart data={purchases} month={date.getMonth() + 1} />
+                    </TabPanel>
+                </Tabs>
+            </div>
         );
     }
 }

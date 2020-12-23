@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import './NewPurchase.css'
 
 class NewPurchase extends React.Component {
   constructor(props) {
@@ -93,42 +94,51 @@ class NewPurchase extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Welcome to Cash Tracker!</h1>
+      <div className="purchase-page">
+        <h1>Enter a New Purchase</h1>
         <form onSubmit={this.onSubmit}>
-          <label>
+          <label className="business-label">
             Business:{" "}
             <input
               type="text"
               value={this.state.business}
               onChange={this.handleBusinessChange}
+              className="business-input"
             />
           </label>
-          <label>
+          <label className="purchase-label">
             Purchase Date:{" "}
             <input
               input="text"
               value={this.state.purchase_date}
-              onChange={this.handlePurchDateChange}>
+              onChange={this.handlePurchDateChange}
+              className="purchase-input"
+            >
             </input>
           </label>
-          <label>
+          <label className="price-label">
             Price:{" "}
             <input
               input="text"
               value={this.state.price}
               onChange={this.handlePriceChange}
+              className="price-input"
             ></input>
           </label>
-          <label>
+          <label className="category-label">
             Category:{" "}
-            <select
+            <input
+              type="text"
+              list="categories"
               value={this.state.category}
-              onChange={this.handleCategoryChange}>
+              onChange={this.handleCategoryChange}
+              className="category-input"
+            />
+            <datalist id="categories">
               {this.DisplayCategories()}
-            </select>
+            </datalist>
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Submit" className="submit-input" />
         </form>
       </div >
     );

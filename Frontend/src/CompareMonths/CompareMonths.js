@@ -47,7 +47,7 @@ class CompareMonths extends React.Component {
         var list = [];
         await axios.get(url)
             .then((resp) => list = resp.data.data)
-            .catch(() => alert("HTTPGetMontlyBreakdown() Failed:("));
+            .catch(() => alert("HTTPGetMonthlyBreakdown() Failed:("));
         //await axios.get(url)
         //    .then((resp) => bdata = resp.data.data)
         //    .catch(() => alert("HTTPGetMontlyBreakdown() Failed:("));

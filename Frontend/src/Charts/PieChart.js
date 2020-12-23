@@ -16,6 +16,7 @@ class PieChart extends React.Component {
         const options = {
             exportEnabled: true,
             animationEnabled: true,
+            backgroundColor: "rgb(191, 247, 191)",
             title: {
                 text: this.props.title
             },
