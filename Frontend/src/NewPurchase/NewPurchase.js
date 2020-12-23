@@ -2,11 +2,12 @@ import React from "react";
 import axios from "axios";
 import './NewPurchase.css'
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 class NewPurchase extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { business: "...", purchase_date: "yyyy/mm/dd", price: "0.00", category: "", category_list: [] };
+    this.state = { business: "...", purchase_date: "", price: "0.00", category: "", category_list: [] };
     this.onSubmit = this.onSubmit.bind(this);
     //this.handleChange = this.handleChange.bind(this);
     this.handleBusinessChange = this.handleBusinessChange.bind(this);
@@ -55,6 +56,8 @@ class NewPurchase extends React.Component {
     else {
       alert(response.data);
     }
+
+    window.location.reload(true);
   }
 
   buildPostDataJson() {
@@ -71,8 +74,14 @@ class NewPurchase extends React.Component {
     this.setState({ business: event.target.value });
   }
 
-  handlePurchDateChange(event) {
-    this.setState({ purchase_date: event.target.value });
+  handlePurchDateChange(value, event) {
+    debugger;
+    if (value != null) {
+      let [month, date, year] = value.toLocaleDateString("en-US").split("/");
+      const fullDate = year + '/' + month + '/' + date;
+      this.setState({ purchase_date: fullDate });
+    }
+
   }
 
   handlePriceChange(event) {
@@ -107,15 +116,9 @@ class NewPurchase extends React.Component {
               className="business-input"
             />
           </label>
-          <label className="purchase-label">
-            Purchase Date:{" "}
-            <input
-              input="text"
-              value={this.state.purchase_date}
-              onChange={this.handlePurchDateChange}
-              className="purchase-input"
-            >
-            </input>
+          <label className="date-label">
+            Purchase Date:
+            <Calendar onChange={this.handlePurchDateChange} className="purchase-calendar" />
           </label>
           <label className="price-label">
             Price:{" "}

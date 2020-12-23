@@ -9,8 +9,8 @@
     text-align: center;
     padding-top: 10;
     padding-bottom: 10;
-    margin-top: 30px;
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 
   .business-label {
@@ -19,13 +19,19 @@
 
   .business-input {
     margin-left: 61px;
-
   }
 
-  .purchase-label {
+  .date-label {
+      display: inline-flex;
+      margin-left: 198px;
+  }
+  .purchase-label{
     margin-left: 18px;
   }
 
+  .purchase-calendar {
+      margin-left: 26px;
+  }
   .purchase-input {
       margin-left: 20px;
   }
