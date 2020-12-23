@@ -13,9 +13,6 @@
     margin-bottom: 20px;
   }
 
-  .purchase-page {
-  }
-
   .business-label {
     margin-left: 18px;
   }
@@ -55,6 +52,6 @@
   }
 
   .submit-input:hover {
-      background-color: rgb(11, 247, 66);
+      background-color: rgb(94, 218, 94);
   }
 

@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./BreakdownChart.css"
 
 class BreakdownChart extends React.Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class BreakdownChart extends React.Component {
         var items = this.props.data;
         var keys = this.getKeys();
         return items.map((row, index) => {
-            return <tr key={index}><RenderRow key={index} data={row} keys={keys} /></tr>
+            return <tr key={index} className="breakdown-row"><RenderRow key={index} data={row} keys={keys} /></tr>
         })
     }
 
@@ -37,7 +37,7 @@ class BreakdownChart extends React.Component {
         if (this.props.data.length != 0) {
             return (
                 <div>
-                    <table>
+                    <table className="breakdown-table">
                         <thead>
                             <tr>{this.getHeader()}</tr>
                         </thead>

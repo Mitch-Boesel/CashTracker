@@ -8,6 +8,10 @@ import CompareMonths from "./CompareMonths/CompareMonths";
 
 function App() {
 
+  const lightGrey = { backgroundColor: "LightGrey" };
+  const skyBlue = { backgroundColor: "SkyBlue" };
+  const indianRed = { backgroundColor: "LightCoral" };
+  const lightGreen = { backgroundColor: "LightGreen" };
   return (
     <div className="App">
       <div>
@@ -18,16 +22,16 @@ function App() {
       <div>
         <Tabs className="tab-row">
           <TabList>
-            <Tab id="Tab1">
+            <Tab id="Tab1" style={lightGreen}>
               <div>New Purchase</div>
             </Tab>
-            <Tab id="Tab2">
+            <Tab id="Tab2" style={skyBlue}>
               <div>Monthly Statistics</div>
             </Tab>
-            <Tab id="Tab3">
+            <Tab id="Tab3" style={indianRed}>
               <div>Yearly Statistics</div>
             </Tab>
-            <Tab id="Tab4">
+            <Tab id="Tab4" style={lightGrey}>
               <div>Compare Months</div>
             </Tab>
           </TabList>

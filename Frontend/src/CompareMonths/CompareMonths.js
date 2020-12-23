@@ -3,6 +3,7 @@ import axios from "axios";
 import PieChart from "../Charts/PieChart";
 import BreakdownChart from "../Charts/BreakdownChart";
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
+import "./CompareMonths.css"
 
 class CompareMonths extends React.Component {
     constructor(props) {
@@ -172,11 +173,14 @@ class CompareMonths extends React.Component {
         const M1Points = this.state.Month1SpendingPoints;
         const M2Points = this.state.Month2SpendingPoints;
         const breakdownData = this.state.BreakdownData;
+
+        const tuquiose = { backgroundColor: "rgb(121, 241, 209)" };
+        const mediumOrchid = { backgroundColor: "rgb(196, 145, 251)" };
         return (
             <div>
-                <div>
-                    <form onSubmit={this.onSubmit}>
-                        <label>
+                <div className="compare-div">
+                    <form onSubmit={this.onSubmit} className="compare-form">
+                        <label className="month-select">
                             Month1: {" "}
                             <select value={this.state.Month1} onChange={this.handleMonth1Change}>
                                 <option value="January">January</option>
@@ -193,7 +197,7 @@ class CompareMonths extends React.Component {
                                 <option value="December">December</option>
                             </select>
                         </label>
-                        <label>
+                        <label className="month-select">
                             Month2: {" "}
                             <select value={this.state.Month2} onChange={this.handleMonth2Change}>
                                 <option value="January">January</option>
@@ -210,15 +214,15 @@ class CompareMonths extends React.Component {
                                 <option value="December">December</option>
                             </select>
                         </label>
-                        <input type="submit" value="Submit" />
+                        <input type="submit" value="Submit" className="compare-submit" />
                     </form>
                 </div>
                 <Tabs>
                     <TabList>
-                        <Tab id="CMTab1">
+                        <Tab id="CMTab1" style={tuquiose}>
                             <div>Compare Charts</div>
                         </Tab>
-                        <Tab id="CMTab2">
+                        <Tab id="CMTab2" style={mediumOrchid}>
                             <div>Compare Percentages</div>
                         </Tab>
                     </TabList>

@@ -102,16 +102,20 @@ class YearlyStatistics extends React.Component {
         const breakdownData = this.state.YearlyBreakdownData;
         const linechartData = this.SpendingToLineChartPoints();
         const date = new Date();
+
+        const tuquiose = { backgroundColor: "rgb(121, 241, 209)" };
+        const lightOrange = { backgroundColor: "rgb(253, 197, 124)" };
+        const mediumOrchid = { backgroundColor: "rgb(196, 145, 251)" };
         return (
             <Tabs>
                 <TabList>
-                    <Tab id="YSTab1">
+                    <Tab id="YSTab1" style={tuquiose}>
                         <div>Spending Chart</div>
                     </Tab>
-                    <Tab id='YSTab2'>
+                    <Tab id='YSTab2' style={lightOrange}>
                         <div>Breakdown Table</div>
                     </Tab>
-                    <Tab id="YSTab3">Month-By-Month Spending</Tab>
+                    <Tab id="YSTab3" style={mediumOrchid}>Month-By-Month Spending</Tab>
                 </TabList>
                 <TabPanel>
                     <PieChart data={points} title="This Years's Spending" />

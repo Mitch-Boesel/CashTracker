@@ -46,7 +46,7 @@ html, body, #root, .App {
 
 
 .tab-row {
-  background-color: rgb(130, 226, 144);
+  background-color: white;
 }
 
 .tab {
@@ -55,6 +55,9 @@ html, body, #root, .App {
 }
 
 .header {
-  background-color: green;
+  background-color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: rgb(3, 76, 3);
   color:yellow;
+  font-size:x-large;
 }

@@ -93,18 +93,21 @@ class MonthlyStatistics extends React.Component {
         const breakdownData = this.state.MonthlyBreakdownData;
         const purchases = this.state.MonthlyPurchases;
         const date = new Date();
-        const color = { backgroundColor: "yellow" };
+
+        const tuquiose = { backgroundColor: "rgb(121, 241, 209)" };
+        const lightOrange = { backgroundColor: "rgb(253, 197, 124)" };
+        const mediumOrchid = { backgroundColor: "rgb(196, 145, 251)" };
         return (
             <div>
-                <Tabs className="month-tab-row">
+                <Tabs>
                     <TabList>
-                        <Tab id="MSTab1">
+                        <Tab id="MSTab1" style={tuquiose}>
                             <div>Spending Chart</div>
                         </Tab>
-                        <Tab id='MSTab2'>
+                        <Tab id='MSTab2' style={lightOrange}>
                             <div>Breakdown Table</div>
                         </Tab>
-                        <Tab id="MSTab3">Purchase List</Tab>
+                        <Tab id="MSTab3" style={mediumOrchid}>Purchase List</Tab>
                     </TabList>
                     <TabPanel className="pie-chart">
                         <PieChart data={points} title="This Month's Spending" />
