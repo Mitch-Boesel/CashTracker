@@ -1,0 +1,63 @@
+ form{
+     display:block;
+     align-items: center;
+     widows: 90px;
+ }
+
+ label {
+    display: block;
+    text-align: center;
+    padding-top: 10;
+    padding-bottom: 10;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .business-label {
+    margin-left: 18px;
+  }
+
+  .business-input {
+    margin-left: 61px;
+  }
+
+  .date-label {
+      display: inline-flex;
+      margin-left: 198px;
+  }
+  .purchase-label{
+    margin-left: 18px;
+  }
+
+  .purchase-calendar {
+      margin-left: 26px;
+  }
+  .purchase-input {
+      margin-left: 20px;
+  }
+
+  .price-label {
+      margin-left: 20px;
+  }
+
+  .price-input {
+      margin-left: 87px;
+  }
+
+  .category-label {
+      margin-right: -16px;
+  }
+
+  .category-input {
+      margin-left: 58px;
+  }
+
+  .submit-input {
+    margin-right: 30px;
+    margin-bottom: 215px;
+  }
+
+  .submit-input:hover {
+      background-color: rgb(94, 218, 94);
+  }
+
