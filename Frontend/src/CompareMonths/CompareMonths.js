@@ -15,7 +15,7 @@ class CompareMonths extends React.Component {
             Month1SpendingPoints: [],
             Month2SpendingPoints: [],
             BreakdownData: [],
-            Month1: "",
+            Month1: "January",
             Month2: ""
         }
 
