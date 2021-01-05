@@ -12,7 +12,7 @@ namespace CashTrackerApiService
         private string Table { get; }
         public PgYearlyBreakdown(string year, PostgresConnection connection) : base(year)
         {
-            Dates = new Tuple<string, string>($"01/31/{year}", $"12/31/{year}");
+            Dates = new Tuple<string, string>($"01/01/{year}", $"12/31/{year}");
             Table = connection.Table;
             ResultJson = ExecuteQuery(connection.ConnectionString);
         }

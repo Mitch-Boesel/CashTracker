@@ -21,7 +21,7 @@ class NewPurchase extends React.Component {
   }
 
   async HttpGetCategories() {
-    const url = "https://localhost:5001/api/ct/newpurchase/categories";
+    const url = this.props.BACKEND_URL + "api/ct/newpurchase/categories";
     var list = []
     await axios.get(url)
       .then((resp) => list = resp.data.data)
@@ -44,7 +44,7 @@ class NewPurchase extends React.Component {
   async onSubmit(e) {
     e.preventDefault();
     debugger;
-    const postUrl = "https://localhost:5001/api/ct/newpurchase/data";
+    const postUrl = this.props.BACKEND_URL + "api/ct/newpurchase/data";
     const bodyData = this.buildPostDataJson();
     const response = await axios.post(postUrl, bodyData, {
       headers: { 'Content-Type': 'application/json' }//, 'Content-Length': JSON.stringify(bodyData).length }

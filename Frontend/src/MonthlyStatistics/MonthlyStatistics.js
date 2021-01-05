@@ -25,7 +25,7 @@ class MonthlyStatistics extends React.Component {
     async HTTPGetMonthlySpending() {
         const today = new Date();
         console.log(today.getMonth())
-        const url = "https://localhost:5001/api/ct/monthly/totals/all/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+        const url = this.props.BACKEND_URL + "api/ct/monthly/totals/all/" + (today.getMonth() + 1) + "/" + today.getFullYear();
 
 
         await axios.get(url)
@@ -35,7 +35,7 @@ class MonthlyStatistics extends React.Component {
 
     async HTTPGetMonthlyBreakdown() {
         const today = new Date();
-        const url = "https://localhost:5001/api/ct/monthly/breakdown/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+        const url = this.props.BACKEND_URL + "api/ct/monthly/breakdown/" + (today.getMonth() + 1) + "/" + today.getFullYear();
         var list = [];
         await axios.get(url)
             .then((resp) => list = resp.data.data)
@@ -48,7 +48,7 @@ class MonthlyStatistics extends React.Component {
 
     async HttpGetMonthlyPurchases() {
         const today = new Date();
-        const url = "https://localhost:5001/api/ct/monthly/purchases/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+        const url = this.props.BACKEND_URL + "api/ct/monthly/purchases/" + (today.getMonth() + 1) + "/" + today.getFullYear();
         var list = []
         await axios.get(url)
             .then((resp) => list = resp.data.data)
