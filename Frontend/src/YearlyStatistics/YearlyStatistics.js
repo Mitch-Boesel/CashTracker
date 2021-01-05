@@ -24,7 +24,7 @@ class YearlyStatistics extends React.Component {
     async HTTPGetYearlySpending() {
         const today = new Date();
         var dict = {};
-        const url = "https://localhost:5001/api/ct/yearly/totals/" + today.getFullYear();
+        const url = this.props.BACKEND_URL + "api/ct/yearly/totals/" + today.getFullYear();
 
         await axios.get(url)
             .then((resp) => dict = resp.data.data)
@@ -36,7 +36,7 @@ class YearlyStatistics extends React.Component {
     // dont have this route wrtitten yet
     async HTTPGetYearlyBreakdown() {
         const today = new Date();
-        const url = "https://localhost:5001/api/ct/Yearly/breakdown/" + today.getFullYear();
+        const url = this.props.BACKEND_URL + "api/ct/Yearly/breakdown/" + today.getFullYear();
         var list = [];
         await axios.get(url)
             .then((resp) => list = resp.data.data)
@@ -49,7 +49,7 @@ class YearlyStatistics extends React.Component {
 
     async HTTPGetYearlyMonthTotals() {
         const today = new Date();
-        const url = "https://localhost:5001/api/ct/yearly/monthly/totals/" + today.getFullYear();
+        const url = this.props.BACKEND_URL + "api/ct/yearly/monthly/totals/" + today.getFullYear();
         var list = []
         await axios.get(url)
             .then((resp) => list = resp.data.data)

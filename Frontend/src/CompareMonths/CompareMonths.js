@@ -15,8 +15,8 @@ class CompareMonths extends React.Component {
             Month1SpendingPoints: [],
             Month2SpendingPoints: [],
             BreakdownData: [],
-            Month1: "",
-            Month2: ""
+            Month1: "January",
+            Month2: "January"
         }
 
         this.handleMonth1Change = this.handleMonth1Change.bind(this);
@@ -29,13 +29,13 @@ class CompareMonths extends React.Component {
     async HTTPGetMonthlySpending() {
         const today = new Date();
 
-        const url1 = "https://localhost:5001/api/ct/monthly/totals/all/" + this.state.Month1 + "/" + today.getFullYear();
+        const url1 = this.props.BACKEND_URL + "api/ct/monthly/totals/all/" + this.state.Month1 + "/" + today.getFullYear();
 
         await axios.get(url1)
             .then((resp) => this.state.Month1SpendingData = resp.data.data)
             .catch(() => alert("GetMontlySpending() Failed:("));
 
-        const url2 = "https://localhost:5001/api/ct/monthly/totals/all/" + this.state.Month2 + "/" + today.getFullYear();
+        const url2 = this.props.BACKEND_URL + "api/ct/monthly/totals/all/" + this.state.Month2 + "/" + today.getFullYear();
 
         await axios.get(url2)
             .then((resp) => this.state.Month2SpendingData = resp.data.data)
@@ -44,7 +44,7 @@ class CompareMonths extends React.Component {
 
     async HTTPGetMonthlyBreakdown(month) {
         const today = new Date();
-        const url = "https://localhost:5001/api/ct/monthly/breakdown/" + month + "/" + today.getFullYear();
+        const url = this.props.BACKEND_URL + "api/ct/monthly/breakdown/" + month + "/" + today.getFullYear();
         var list = [];
         await axios.get(url)
             .then((resp) => list = resp.data.data)

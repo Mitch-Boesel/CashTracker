@@ -5,6 +5,7 @@ import { Tabs, Tab, TabList, TabPanel } from "react-tabs";
 import MonthlyStatistics from "./MonthlyStatistics/MonthlyStatistics";
 import YearlyStatistics from "./YearlyStatistics/YearlyStatistics";
 import CompareMonths from "./CompareMonths/CompareMonths";
+import configData from "./configuration.json";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
   const skyBlue = { backgroundColor: "SkyBlue" };
   const indianRed = { backgroundColor: "LightCoral" };
   const lightGreen = { backgroundColor: "LightGreen" };
+  const BACKEND_URL = configData.BACKEND_URL;
   return (
     <div className="App">
       <div>
@@ -37,16 +39,16 @@ function App() {
           </TabList>
 
           <TabPanel>
-            <NewPurchase />
+            <NewPurchase BACKEND_URL={BACKEND_URL} />
           </TabPanel>
           <TabPanel>
-            <MonthlyStatistics />
+            <MonthlyStatistics BACKEND_URL={BACKEND_URL} />
           </TabPanel>
           <TabPanel>
-            <YearlyStatistics />
+            <YearlyStatistics BACKEND_URL={BACKEND_URL} />
           </TabPanel>
           <TabPanel>
-            <CompareMonths></CompareMonths>
+            <CompareMonths BACKEND_URL={BACKEND_URL}></CompareMonths>
           </TabPanel>
         </Tabs>
       </div>

@@ -355,6 +355,7 @@ Notes.txt
 SQL_Queries.txt
 WorkItems.txt
 table_schema.txt
+PostgresBackup/
 */appsettings.json
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
