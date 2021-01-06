@@ -8,7 +8,7 @@ import "./CompareMonths.css"
 class CompareMonths extends React.Component {
     constructor(props) {
         super(props);
-
+        const today = new Date();
         this.state = {
             Month1SpendingData: {},
             Month2SpendingData: {},
@@ -16,11 +16,15 @@ class CompareMonths extends React.Component {
             Month2SpendingPoints: [],
             BreakdownData: [],
             Month1: "January",
-            Month2: "January"
+            Month2: "January",
+            Year1: today.getFullYear(),
+            Year2: today.getFullYear()
         }
 
         this.handleMonth1Change = this.handleMonth1Change.bind(this);
         this.handleMonth2Change = this.handleMonth2Change.bind(this);
+        this.handleYear1Change = this.handleYear1Change.bind(this);
+        this.handleYear2Change = this.handleYear2Change.bind(this);
         this.HTTPGetMonthlySpending = this.HTTPGetMonthlySpending.bind(this);
         this.CombineBreakdownData = this.CombineBreakdownData.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -29,22 +33,22 @@ class CompareMonths extends React.Component {
     async HTTPGetMonthlySpending() {
         const today = new Date();
 
-        const url1 = this.props.BACKEND_URL + "api/ct/monthly/totals/all/" + this.state.Month1 + "/" + today.getFullYear();
+        const url1 = this.props.BACKEND_URL + "api/ct/monthly/totals/all/" + this.state.Month1 + "/" + this.state.Year1;
 
         await axios.get(url1)
             .then((resp) => this.state.Month1SpendingData = resp.data.data)
             .catch(() => alert("GetMontlySpending() Failed:("));
 
-        const url2 = this.props.BACKEND_URL + "api/ct/monthly/totals/all/" + this.state.Month2 + "/" + today.getFullYear();
+        const url2 = this.props.BACKEND_URL + "api/ct/monthly/totals/all/" + this.state.Month2 + "/" + this.state.Year2;
 
         await axios.get(url2)
             .then((resp) => this.state.Month2SpendingData = resp.data.data)
             .catch(() => alert("GetMontlySpending() Failed:("));
     }
 
-    async HTTPGetMonthlyBreakdown(month) {
+    async HTTPGetMonthlyBreakdown(month, year) {
         const today = new Date();
-        const url = this.props.BACKEND_URL + "api/ct/monthly/breakdown/" + month + "/" + today.getFullYear();
+        const url = this.props.BACKEND_URL + "api/ct/monthly/breakdown/" + month + "/" + year;
         var list = [];
         await axios.get(url)
             .then((resp) => list = resp.data.data)
@@ -104,8 +108,8 @@ class CompareMonths extends React.Component {
 
 
         var data = [];
-        const abbrev_m1 = this.AbbreviatedMonth(this.state.Month1);
-        const abbrev_m2 = this.AbbreviatedMonth(this.state.Month2);
+        const abbrev_m1 = this.AbbreviatedMonth(this.state.Month1) + " " + this.state.Year1;
+        const abbrev_m2 = this.AbbreviatedMonth(this.state.Month2) + " " + this.state.Year2;
 
         for (i = 0; i < uniqueKeys.length; i++) {
             var d = {};
@@ -148,11 +152,19 @@ class CompareMonths extends React.Component {
         this.setState({ Month2: event.target.value });
     }
 
+    handleYear1Change(event) {
+        this.setState({ Year1: event.target.value });
+    }
+
+    handleYear2Change(event) {
+        this.setState({ Year2: event.target.value });
+    }
+
     async onSubmit(e) {
         e.preventDefault();
         await this.HTTPGetMonthlySpending();
-        const m1_bdown_list = await this.HTTPGetMonthlyBreakdown(this.state.Month1);
-        const m2_bdown_list = await this.HTTPGetMonthlyBreakdown(this.state.Month2);
+        const m1_bdown_list = await this.HTTPGetMonthlyBreakdown(this.state.Month1, this.state.Year1);
+        const m2_bdown_list = await this.HTTPGetMonthlyBreakdown(this.state.Month2, this.state.Year2);
         const bdown_list = this.CombineBreakdownData(m1_bdown_list, m2_bdown_list);
 
         //const purch_list = await this.HttpGetMonthlyPurchases();
@@ -198,6 +210,15 @@ class CompareMonths extends React.Component {
                             </select>
                         </label>
                         <label className="month-select">
+                            Year1: {""}
+                            <select value={this.state.Year1} onChange={this.handleYear1Change}>
+                                <option value={2021}>2021</option>
+                                <option value={2020}>2020</option>
+                                <option value={2019}>2019</option>
+
+                            </select>
+                        </label>
+                        <label className="month-select">
                             Month2: {" "}
                             <select value={this.state.Month2} onChange={this.handleMonth2Change}>
                                 <option value="January">January</option>
@@ -214,6 +235,15 @@ class CompareMonths extends React.Component {
                                 <option value="December">December</option>
                             </select>
                         </label>
+                        <label className="month-select">
+                            Year: {""}
+                            <select value={this.state.Year2} onChange={this.handleYear2Change}>
+                                <option value={2021}>2021</option>
+                                <option value={2020}>2020</option>
+                                <option value={2019}>2019</option>
+
+                            </select>
+                        </label>
                         <input type="submit" value="Submit" className="compare-submit" />
                     </form>
                 </div>
@@ -227,8 +257,8 @@ class CompareMonths extends React.Component {
                         </Tab>
                     </TabList>
                     <TabPanel>
-                        <PieChart data={M1Points} title={this.state.Month1} />
-                        <PieChart data={M2Points} title={this.state.Month2} />
+                        <PieChart data={M1Points} title={this.state.Month1 + " " + this.state.Year1} />
+                        <PieChart data={M2Points} title={this.state.Month2 + " " + this.state.Year2} />
                     </TabPanel>
                     <TabPanel>
                         <BreakdownChart data={breakdownData}></BreakdownChart>
