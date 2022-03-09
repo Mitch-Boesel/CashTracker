@@ -6,7 +6,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     container_name: cashtracker-backend
     ports:
-      - 5000:80
+      - 5005:80
     depends_on: 
       - "db"
 
@@ -26,8 +26,17 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=Brewster_5
     volumes: 
-      - ./Database/postgres_data:/var/lib/postgresql
+      - ./Database/postgres_data:/var/lib/postgresql/data
       - ./Database/postgres.conf:/etc/postgresql/postgresql.conf
       - ./Database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=mboesel@ct.com
+      - PGADMIN_DEFAULT_PASSWORD=CashTracker1
+    ports:
+      - "5050:80"

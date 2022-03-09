@@ -1,3 +1,34 @@
 {
-    "BACKEND_URL": "http://localhost:5000/"
+    "BACKEND_URL": "http://localhost:5005/",
+    "SpendingGroups": {
+        "Essentials": {
+            "Categories": [
+                "Utilities",
+                "Rent",
+                "Car Insurance",
+                "Internet",
+                "Phone",
+                "Gas"
+            ],
+            "Allocated": 1700,
+            "HTTP": 1
+        },
+        "Food": {
+            "Categories": [
+                "Groceries",
+                "Eating Out"
+            ],
+            "Allocated": 388,
+            "HTTP": 1
+        },
+        "401K": {
+            "Allocated": 315,
+            "HTTP": 0
+        },
+        "Investing": {
+            "Allocated": 1500,
+            "HTTP": 0
+        }
+    },
+    "MonthlyIncome": 4561.10
 }

@@ -56,23 +56,20 @@ namespace CashTrackerApiService.Controllers
             return query.ResultJson;
         }
 
-        /*
-        // POST: api/Monthly
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet]
+        [HttpGet("groups/defined/{Month}/{Year}/{categories}")]
+        public string GetDefinedGroupTotal(string Month, string Year, string categories)
         {
+            PostgresQuery query = new PgPurchaseGroup(Year, Month, categories, true, postgresConnection);
+            return query.ResultJson;
         }
 
-        // PUT: api/Monthly/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpGet]
+        [HttpGet("groups/undefined/{Month}/{Year}/{categories}")]
+        public string GetUndefinedGroupTotal(string Month, string Year, string categories)
         {
+            PostgresQuery query = new PgPurchaseGroup(Year, Month, categories, false, postgresConnection);
+            return query.ResultJson;
         }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }*/
     }
 }

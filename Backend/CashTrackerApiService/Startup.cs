@@ -61,8 +61,6 @@ namespace CashTrackerApiService
                 .AddEnvironmentVariables();
 
             return config.Build();
-
-
         }
     }
 }

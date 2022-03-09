@@ -212,6 +212,7 @@ class CompareMonths extends React.Component {
                         <label className="month-select">
                             Year1: {""}
                             <select value={this.state.Year1} onChange={this.handleYear1Change}>
+                                <option value={2022}>2022</option>
                                 <option value={2021}>2021</option>
                                 <option value={2020}>2020</option>
                                 <option value={2019}>2019</option>

@@ -34,17 +34,10 @@ namespace CashTrackerApiService.Controllers
         {
             PostgresQuery query = new PgGetCategories(PostgresConnection);
             return query.ResultJson;
-
-            //Dictionary<string, List<string>> test = new Dictionary<string, List<string>>();
-            //test.Add("data", new List<string>());
-            //test["data"].Add("LetsGooo");
-
-            //return JsonConvert.SerializeObject(test, Formatting.Indented);
         }
 
         [HttpPost]
         [HttpPost("data")]
-        //[EnableCors("*")]
         public string Post([FromBody]JObject data)
         {
             var d = data.ToString();
